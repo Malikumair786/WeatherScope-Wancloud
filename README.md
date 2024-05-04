@@ -23,11 +23,14 @@ WeatherScope is a real-time weather forecasting application developed with React
     ```bash
     REACT_APP_WEATHER_API_KEY=your_weather_api_key_here
     REACT_APP_X_RAPIDAPI_KEY=your_rapidapi_key_here
-Replace placeholders with your actual API keys.
+    
+    Replace placeholders with your actual API keys.
+
 4. **Start the application**:
     ```bash
     npm start
-Visit http://localhost:3000 to view the app.
+
+    Visit http://localhost:3000 to view the app.
 
 
 **Scripts**
