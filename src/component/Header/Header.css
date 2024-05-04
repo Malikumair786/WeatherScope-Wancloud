@@ -1,0 +1,19 @@
+.hover-trigger {
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .underline-animation {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background-color: #54D6BB;
+    transition: width 0.3s ease;
+  }
+  
+  .hover-trigger:hover .underline-animation {
+    width: 100%;
+  }
+  
