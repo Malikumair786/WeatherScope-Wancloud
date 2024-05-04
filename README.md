@@ -20,7 +20,7 @@ WeatherScope is a real-time weather forecasting application developed with React
     npm install
 3. **Environment Configuration**:
     Create a .env file at the root and add the following keys:
-
+    ```bash
     REACT_APP_WEATHER_API_KEY=your_weather_api_key_here
     REACT_APP_X_RAPIDAPI_KEY=your_rapidapi_key_here
 Replace placeholders with your actual API keys.
