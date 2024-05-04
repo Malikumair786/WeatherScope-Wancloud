@@ -1,28 +1,31 @@
 import React, { useState } from "react";
+import axios from "axios";
 
-import { geoApiOptions, GEO_API_URL } from "apis/api";
-
+import { axiosGeoApiOptions, GEO_API_URL } from "apis/api";
 import { AsyncPaginate } from "react-select-async-paginate";
 
 const InputSearch = ({ onSearchChange }) => {
   const [search, setSearch] = useState(null);
 
-  const loadOptions = (inputValue) => {
-    return fetch(
-      `${GEO_API_URL}/cities?minPopulation=1000000&namePrefix=${inputValue}`,
-      geoApiOptions
-    )
-      .then((response) => response.json())
-      .then((response) => {
-        return {
-          options: response.data.map((city) => {
-            return {
-              value: `${city.latitude} ${city.longitude}`,
-              label: `${city.name}, ${city.countryCode}`,
-            };
-          }),
-        };
+  const loadOptions = async (inputValue) => {
+    try {
+      const response = await axios.get(`${GEO_API_URL}/cities`, {
+        params: {
+          minPopulation: 1000000,
+          namePrefix: inputValue,
+        },
+        ...axiosGeoApiOptions,
       });
+      return {
+        options: response.data.data.map((city) => ({
+          value: `${city.latitude} ${city.longitude}`,
+          label: `${city.name}, ${city.countryCode}`,
+        })),
+      };
+    } catch (error) {
+      console.error("Error loading options:", error);
+      return { options: [] };
+    }
   };
 
   const handleOnChange = (searchData) => {

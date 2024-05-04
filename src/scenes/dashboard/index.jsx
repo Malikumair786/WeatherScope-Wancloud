@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import axios from "axios";
 
 import CurrentWeather from "component/current-weather";
 import { WEATHER_API_URL, WEATHER_API_KEY } from "apis/api";
@@ -18,15 +19,26 @@ const Dashboard = () => {
 
   useEffect(() => {
     const fetchWeatherData = async () => {
-      const promises = cities.map((city) =>
-        fetch(
-          `${WEATHER_API_URL}/weather?lat=${city.lat}&lon=${city.lon}&appid=${WEATHER_API_KEY}&units=metric`
-        )
-          .then((response) => response.json())
-          .then((data) => ({ city: city.name, ...data }))
-      );
-      const results = await Promise.all(promises);
-      setWeatherData(results);
+      try {
+        const promises = cities.map((city) =>
+          axios.get(`${WEATHER_API_URL}/weather`, {
+            params: {
+              lat: city.lat,
+              lon: city.lon,
+              appid: WEATHER_API_KEY,
+              units: "metric",
+            },
+          })
+        );
+        const results = await Promise.all(promises);
+        const weatherResults = results.map((result, index) => ({
+          city: cities[index].name,
+          ...result.data,
+        }));
+        setWeatherData(weatherResults);
+      } catch (error) {
+        console.error("Error fetching weather data:", error);
+      }
     };
 
     fetchWeatherData();
@@ -35,7 +47,6 @@ const Dashboard = () => {
   return (
     <div className="container bg-secondary max-w-full p-3">
       <Title style={{ color: "white" }}>Weather Update</Title>
-
       <Text className="text-white text-md mt-3">
         Weather update for Lahore, Karachi, Islamabad, and Peshawar
       </Text>
